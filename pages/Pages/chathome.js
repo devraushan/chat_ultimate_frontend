@@ -65,7 +65,7 @@ function Chat() {
         <div className='grid justify-items-center align-items-center'>
           <h1 className='bold text-4xl my-2'>ChatBox</h1>
           <div className='w-1/2 bg-slate-400	h-[600px]'>
-            {messageArr.map(msg=><div>{msg.sender}:{msg.message}</div>)}
+            {/* {messageArr.map(msg=><div>{msg.sender}:{msg.message}</div>)} */}
           </div>
           <div className='flex justify-around h-[30px] my-2 bg-red-400	w-1/2 p-[3px] '>
             <input type="text" className='w-2/3' placeholder='Enter Message Here' onChange={handleChange} value={message} id='message' />
