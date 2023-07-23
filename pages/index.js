@@ -5,7 +5,7 @@ import Header from '../components/Header'
 export default function Home() {
   return (
   <>
-    <section className='container bg-gradient-to-r from-purple-500 to-pink-500 text-center h-[650px]'>
+    <section className='bg-gradient-to-r from-purple-500 to-pink-500 text-center h-[750px] w-screen'>
       <p className='text-xl pt-24'>Always Connected</p>
       <span>WITH</span>
       <p className='font-bold text-[5rem] text-red-300 pt-10'>Chat Ultimate</p>

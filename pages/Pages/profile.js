@@ -1,10 +1,9 @@
-import React,{useEffect} from 'react'
-import path from "path"
+import React from 'react'
 import useSWR from "swr"
 
 const fetchUser = (url)=>fetch(url).then((res)=> res.json());
 
-function profile() {
+function Profile() {
   const {data,error} = useSWR("/api/user",fetchUser);
   if(error) return <div>Failed To Load</div>;
   if(!data) return <div>Loading...</div>;
@@ -22,4 +21,4 @@ function profile() {
   )
 }
 
-export default profile
+export default Profile
