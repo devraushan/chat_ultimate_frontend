@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useRef} from 'react'
 import { io } from "socket.io-client"
 
-const socket = io("http://10.63.0.83:5001")
+const socket = io("http://10.63.0.33:5001")
 
 
 function Chat() {
