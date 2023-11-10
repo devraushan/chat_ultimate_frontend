@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice"
+import chatListReducer from "./slices/chatSlice"
 import storage from "redux-persist/lib/storage"
 import { persistReducer,persistStore } from "redux-persist";
 import thunk from "redux-thunk";
@@ -12,7 +13,7 @@ const persistConfig  = {
 const persistedReducer = persistReducer(persistConfig,userReducer)
 
 export const store = configureStore({
-    reducer: persistedReducer,
+    reducer: {authToken:persistedReducer,chatlist:chatListReducer},
     middleware: [thunk]
 })
 

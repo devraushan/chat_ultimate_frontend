@@ -4,7 +4,7 @@ import Link from "next/link"
 function Navbar() {
   return (
     <div >
-        <div className='w-100  flex flex-row justify-around bg-lime-500 font-semibold' >
+        <div className='w-100  flex flex-row justify-around font-semibold' >
             <button>
                 <Link href={`/`}>Home</Link>
             </button>

@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <>
-        <div className='sticky top-0'>
+        <div className='rounded-3xl bg-gray-400 sticky top-0 my-10 mx-10'>
           <Header/>
           <Navbar/>
         </div>

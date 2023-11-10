@@ -1,21 +1,37 @@
 import React from 'react'
-import { useState, useRef} from 'react'
+import { useState, useRef,useEffect} from 'react'
 import { io } from "socket.io-client"
+import userData from "../../UserData/tempState"
 
-const socket = io("http://10.63.0.33:5001")
+const IP = process.env.NEXT_PUBLIC_IP
+const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
 
 
-function Chat() {
+const socket = io(`http://${IP}:${backendPort}`)
 
+
+function Chat(props) {
+
+  const userName = userData.userName
+  const chatPerson = props.props
   const fileRef = useRef()
   //state declarations
   const [image, setimage] = useState(null)
   const [imageUrl, setimageUrl] = useState(null)
-  const [roomId, setroomId] = useState("room1")
-  const [userName, setUserName] = useState("")
-  const [isRegistered, setIsRegistered] = useState(false)
+  const [roomId, setroomId] = useState(null)
   const [messageArr, setmessageArr] = useState([])
   const [message, setmessage] = useState("")
+
+  socket.emit("joiningReq",{roomId:chatPerson.id,userName})
+
+  useEffect(() => {
+  socket.disconnect()
+  socket.connect()
+  setroomId(chatPerson.id)
+  socket.emit("joiningReq",{roomId:chatPerson.id,userName})
+  setmessageArr([])
+  }, [props])
+
 
   //functions
 
@@ -30,12 +46,9 @@ function Chat() {
   const handleChange = (event)=>{
     setmessage(event.target.value)
   } 
-  const handleName=(event)=>setUserName(event.target.value)
-  const handleRoom=(event)=> setroomId(event.target.value)
-  const nameSetter = ()=>{
-    socket.emit("joiningReq",{roomId,userName})
-    setIsRegistered(true);
-  }
+
+  
+  
   function sendMessage() {
     socket.emit("message", {message,sender:userName,roomId,file:image})
     setmessageArr(messageArr.concat({message,sender:userName,image:imageUrl}))
@@ -49,15 +62,14 @@ function Chat() {
   })
   
   //display chat interface
-
-  if(isRegistered){
+  let msgkey = 0
 
     return (
       <div>
         <div className='grid justify-items-center align-items-center'>
-          <h1 className='bold text-4xl my-2'>ChatBox</h1>
+          <h1 className='bold text-4xl my-2'>{chatPerson.fName+" "+chatPerson.lName}</h1>
           <div className='w-1/2 max-sm:w-[95vw] bg-slate-400 overflow-scroll	h-[600px]'>
-            {messageArr.map(msg=><div>{msg.sender}:{msg.message}{( msg.image && <img src={msg.image} height={100} width = {100} />)}</div>)}
+            {messageArr.map(msg=><div key={msgkey++}>{msg.sender}:{msg.message}{( msg.image && <img src={msg.image} height={100} width = {100} />)}</div>)}
           </div>
           <div className='flex max-sm:w-[95vw] justify-around h-[30px] my-2 bg-red-400	w-1/2 p-[3px] '>
             <input type="text" className='w-2/3' placeholder='Enter Message Here' onChange={handleChange} value={message} id='message' />
@@ -78,16 +90,6 @@ function Chat() {
 
   //display registration page
 
-  return (
-    <div className='grid align-items-center'>
-      <div className='grid justify-items-center items-center h-[200px] bg-blue-400 py-[40px] sm:mx-[30%] sm:my-[20%]'>
-        <input type="text" onChange={handleRoom} value={roomId} />
-        <input type="text" onChange={handleName} value={userName} />
-        <button className='w-[30%] bg-amber-300' onClick={nameSetter} >Register</button>
-      </div>
-    </div> 
-  )
-}
 
 
 export default Chat
