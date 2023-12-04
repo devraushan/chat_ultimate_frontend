@@ -7,7 +7,7 @@ const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
 
 const fetchUser = (authToken) => fetch(`http://${IP}:${backendPort}/auth/getprofile`, { headers: { "auth-token": authToken } }).then((res) => res.json());
 function Profile() {
-  const userStatus = useSelector((state) => state)
+  const userStatus = useSelector((state) => state.authToken)
   const authToken = userStatus.data.authToken
   //ENV Variables
 

@@ -52,7 +52,7 @@ function Chatlist() {
     return (<div>Loading</div>)
   }
   return (
-    <div className='mx-40 grid grid-cols-[auto,1fr]'>
+    <div className='mx-40 grid gap-x-2 grid-cols-[auto,1fr]'>
       <div className=''>
         {chatList.chats.map(chat => {
           return <div key={chat.id} className={"rounded "+(chat.id == focusChat?"bg-orange-900":"bg-slate-500")} onClick={() => {
