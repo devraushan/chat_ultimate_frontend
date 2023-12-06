@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react'
 const IP = process.env.NEXT_PUBLIC_IP
 const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
 
-function signup() {
+function Signup() {
   const [signupSuccess, setsignupSuccess] = useState(false)
   const imageInput = useRef()
   const router = useRouter()
@@ -87,4 +87,4 @@ function signup() {
   )
 }
 
-export default signup
+export default Signup
