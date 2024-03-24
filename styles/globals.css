@@ -18,6 +18,22 @@ a {
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar{
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background-color: white; /* Adjust scrollbar track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #016572; /* Adjust scrollbar thumb color */
+  border-radius: 3px; /* Adjust scrollbar thumb border radius */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #3a3b21; /* Adjust scrollbar thumb color on hover */
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

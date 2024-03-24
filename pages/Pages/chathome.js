@@ -1,14 +1,14 @@
-import React from 'react'
 import { useState, useRef,useEffect} from 'react'
 import { io } from "socket.io-client"
 import userData from "../../UserData/tempState"
+import Image from 'next/image'
 import { useSelector } from 'react-redux'
 
-const IP = process.env.NEXT_PUBLIC_IP
+const DOMAIN = process.env.NEXT_PUBLIC_BACKEND_DOMAIN 
 const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
+const backendProtocol = process.env.NEXT_PUBLIC_PROTOCOL
 
-
-const socket = io(`http://${IP}:${backendPort}`)
+const socket = io(`${backendProtocol}://${DOMAIN}:${backendPort}`)
 
 
 function Chat(props) {
@@ -16,6 +16,7 @@ function Chat(props) {
   const userName = userData.userName
   const chatPerson = props.props
   const fileRef = useRef()
+  const chatBoxRef = useRef()
   const authToken = useSelector(state=>state.authToken.data.authToken)
 
   //state declarations
@@ -26,7 +27,7 @@ function Chat(props) {
   const [message, setmessage] = useState("")
 
   async function getMessage(chatId,authToken){
-    let chatList = await fetch(`http://${IP}:${backendPort}/chat/getMessages`,{
+    let chatList = await fetch(`${backendProtocol}://${DOMAIN}:${backendPort}/chat/getMessages`,{
       method:"POST",
       headers:{
         "auth-token":authToken,
@@ -67,7 +68,6 @@ function Chat(props) {
   } 
 
   
-  
   function sendMessage() {
     socket.emit("message", {message,sender:userName,roomId,file:image})
     setmessageArr(messageArr.concat({message,sender:userName,image:imageUrl}))
@@ -77,28 +77,28 @@ function Chat(props) {
     fileRef.current.value = null
   }
   socket.on("newMessage",data=>{
-      setmessageArr(messageArr.concat(data))
+      setmessageArr(messageArr.concat(data))      
   })
   
   //display chat interface
   let msgkey = 0
 
     return (
-      <div>
+      <div >
         <div className='grid justify-items-center align-items-center'>
           <h1 className='bold text-4xl my-2'>{chatPerson.fName+" "+chatPerson.lName}</h1>
-          <div className='w-full max-sm:w-[95vw] bg-slate-400 overflow-scroll	h-[600px]'>
-            {messageArr.map(msg=><div key={msgkey++}>{msg.sender}:{msg.message}{( msg.image && <img src={msg.image} height={100} width = {100} />)}</div>)}
+          <div ref={chatBoxRef} className='w-full px-2 py-2 bg-slate-400 overflow-y-auto customScroll h-[68vh] flex flex-col'>
+            {messageArr.map(msg=><div className={`${msg.sender===userName?" self-end bg-red-200":"bg-blue-200 self-start"} max-w-[90%] my-2 p-1 rounded`} key={msgkey++}>{msg.message}{( msg.image && <Image src={msg.image} height={100} width = {100} />)}</div>)}
           </div>
-          <div className='flex max-sm:w-[95vw] justify-around h-[30px] my-2 bg-red-400	w-full p-[3px] '>
+          <div className='flex justify-around h-[30px] my-2 bg-red-400	w-full p-[3px] z-40'>
             <input type="text" className='w-2/3' placeholder='Enter Message Here' onChange={handleChange} value={message} id='message' />
             <label htmlFor="attatchment"  > + </label>
             <input type="file" ref={fileRef} onChange={handleImage} id="attatchment" hidden />
-            <button className=' w-[25%] bg-amber-300' onClick={sendMessage}>Send</button>
+            <button className=' w-[25%] bg-amber-300'  onClick={sendMessage}>Send</button>
           </div>
           { imageUrl && 
             <div className="h-[150px] w-[200px] bg-slate-300 display-flex relative bottom-[200px] ">
-              <img src={imageUrl} alt="" className='h-[150px] w-[200px]' srcSet="" />
+              <Image src={imageUrl} alt="" height={150} width={200} className='h-[150px] w-[200px]' srcSet="" />
             </div>
           }
           

@@ -4,20 +4,25 @@ import Chat from './chathome';
 import { useSelector,useDispatch } from 'react-redux';
 import Chatcard from '../../components/Chatcard';
 import { populateChat } from '../../Store/slices/chatSlice';
+import BackIcon from '../../components/BackIcon';
+import { useRouter } from 'next/router';
 
-const IP = process.env.NEXT_PUBLIC_IP
-const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
-
+const PORT = process.env.NEXT_PUBLIC_BACKEND_PORT
+const backendDomain = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
+const backendProtocol = process.env.NEXT_PUBLIC_PROTOCOL
 
 function Chatlist() {
-
+  const router =  useRouter()
+  const [backButton, setbackButton] = useState(false)
   const [error, seterror] = useState(null)
   const [focusChat, setfocusChat] = useState(null)
   const [chatObj, setchatObj] = useState(null)
   const dispatch = useDispatch()
 
   const userStatus = useSelector((state) => state.authToken)
+  if(userStatus.data=="") router.push("/Pages/login")
   const chatList = useSelector((state)=>state.chatlist)
+
   //Fetch Chat Function
   async function fetchChat(url,authToken){
     try {
@@ -35,9 +40,13 @@ function Chatlist() {
     }
   }
 
+  const revertState = ()=>{
+    setbackButton(false)
+  }
   const authToken = userStatus.data.authToken
   useEffect(() => {
-    fetchChat(`http://${IP}:${backendPort}/chat/fetchall`,authToken)
+    fetchChat(`${backendProtocol}://${backendDomain}:${PORT}/chat/fetchall`,authToken)
+    
   }, [])
   
 
@@ -52,19 +61,26 @@ function Chatlist() {
     return (<div>Loading</div>)
   }
   return (
-    <div className='mx-40 grid gap-x-2 grid-cols-[auto,1fr]'>
-      <div className=''>
-        {chatList.chats.map(chat => {
-          return <div key={chat.id} className={"rounded "+(chat.id == focusChat?"bg-orange-900":"bg-slate-500")} onClick={() => {
-            setfocusChat(chat.id)
-            handleChatEntry(chat)
-          }}><Chatcard props={chat} /></div>
-        })}
+    <div className='xl:mx-40 mx-2  grid gap-x-2 sm:grid-cols-[auto,1fr] '>
+      <div className={`${backButton?"max-sm:absolute":""}`}>
+      <div className={`${backButton?"sm:hidden":"hidden"} flex justify-center mt-1`} onClick={revertState}><BackIcon height={48} width={48}/></div>
+      <div className={`${backButton?"max-sm:hidden":""}`}>
+
+          {chatList.chats.map(chat => {
+            return <div key={chat.id} className={"rounded "+(chat.id == focusChat?"bg-orange-900":"bg-slate-500")} onClick={() => {
+              setfocusChat(chat.id)
+              handleChatEntry(chat)
+              setbackButton(true)
+            }}><Chatcard props={chat} /></div>
+          })}
       </div>
-      <div>
+      </div>
+      
+      <div className={`${backButton?"":"max-sm:hidden"} `}>
         {chatObj && <Chat props={chatObj} />}
       </div>
-      <div className='fixed bottom-5 right-5'>
+      
+      <div className={`fixed ${backButton?"max-sm:hidden":""} bottom-5 right-5`}>
         <SearchComponent/>
       </div>
     </div>

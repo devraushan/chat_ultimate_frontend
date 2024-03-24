@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
 import React, { useRef, useState } from 'react'
 
-const IP = process.env.NEXT_PUBLIC_IP
+const backendDomain = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
+const backendProtocol = process.env.NEXT_PUBLIC_PROTOCOL
 
 function Signup() {
   const [signupSuccess, setsignupSuccess] = useState(false)
@@ -27,7 +28,7 @@ function Signup() {
     signupData.append("phNo",phNo)
     signupData.append("country",country)
     signupData.append("profilePic",profilePic)
-    fetch(`http://${IP}:${backendPort}/auth/signup`,{
+    fetch(`${backendProtocol}://${backendDomain}:${backendPort}/auth/signup`,{
       method: "POST",
       body: signupData,
     }).then(data => data.json().then(data=>{

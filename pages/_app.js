@@ -1,5 +1,4 @@
 import Header from '../components/Header'
-import Navbar from '../components/Navbar'
 import {store,persistor} from "./../Store/store"
 import '../styles/globals.css'
 import { Provider } from 'react-redux'
@@ -10,9 +9,8 @@ function MyApp({ Component, pageProps }) {
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <>
-        <div className='rounded-3xl bg-gray-400 sticky top-0 my-10 mx-10'>
+        <div className='z-100 bg-gray-400 sticky top-0 '>
           <Header/>
-          <Navbar/>
         </div>
         <Component {...pageProps} />
       </>

@@ -4,9 +4,9 @@ import { useState,useEffect } from "react"
 import { useSelector,useDispatch } from "react-redux"
 import { appendChat } from "../Store/slices/chatSlice"
 
-const IP = process.env.NEXT_PUBLIC_IP
+const IP = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
-
+const protocol = process.env.NEXT_PUBLIC_PROTOCOL 
 
 function SearchComponent() {
   const [searchParams, setsearchParams] = useState("")
@@ -18,7 +18,7 @@ function SearchComponent() {
   
 
   async function fetchUserSearch(params,authToken){
-    let results = await fetch(`http://${IP}:${backendPort}/search/users?params=${params}`,{
+    let results = await fetch(`${protocol}://${IP}:${backendPort}/search/users?params=${params}`,{
       headers:{
         "auth-token":authToken
       }
