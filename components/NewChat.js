@@ -4,9 +4,10 @@ import { useState,useEffect } from "react"
 import { useSelector,useDispatch } from "react-redux"
 import { appendChat } from "../Store/slices/chatSlice"
 
-const IP = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
-const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
-const protocol = process.env.NEXT_PUBLIC_PROTOCOL 
+// const IP = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
+// const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
+// const protocol = process.env.NEXT_PUBLIC_PROTOCOL 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 function SearchComponent() {
   const [searchParams, setsearchParams] = useState("")
@@ -18,7 +19,7 @@ function SearchComponent() {
   
 
   async function fetchUserSearch(params,authToken){
-    let results = await fetch(`${protocol}://${IP}:${backendPort}/search/users?params=${params}`,{
+    let results = await fetch(`${backendUrl}/search/users?params=${params}`,{
       headers:{
         "auth-token":authToken
       }
@@ -44,7 +45,7 @@ function SearchComponent() {
       console.log(error)
     }
   }
-  const createChatUrl = `http://${IP}:${backendPort}/chat/create/`
+  const createChatUrl = `${backendUrl}/chat/create/`
 
   useEffect(() => {
     fetchUserSearch(searchParams,authToken)

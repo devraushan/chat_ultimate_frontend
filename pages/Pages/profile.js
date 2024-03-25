@@ -3,11 +3,12 @@ import useSWR from "swr"
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
 
-const DOMAIN = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
-const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
-const backendProtocol = process.env.NEXT_PUBLIC_PROTOCOL
+// const DOMAIN = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
+// const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
+// const backendProtocol = process.env.NEXT_PUBLIC_PROTOCOL
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
-const fetchUser = (authToken) => fetch(`${backendProtocol}://${DOMAIN}:${backendPort}/auth/getprofile`, { headers: { "auth-token": authToken } }).then((res) => res.json());
+const fetchUser = (authToken) => fetch(`${backendUrl}/auth/getprofile`, { headers: { "auth-token": authToken } }).then((res) => res.json());
 function Profile() {
   const userStatus = useSelector((state) => state.authToken)
   const authToken = userStatus.data.authToken

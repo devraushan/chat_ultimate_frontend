@@ -7,9 +7,7 @@ import { fetchUser } from './../../Store/slices/userSlice'
 
 function Login() {
 
-  //Environment Variables
-  const IP = process.env.NEXT_PUBLIC_IP
-  const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
+
 
   const dispatch = useDispatch()
   const router = useRouter()

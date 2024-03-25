@@ -3,10 +3,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const IP = process.env.NEXT_PUBLIC_IP
 const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
 const backendProtocol = process.env.NEXT_PUBLIC_PROTOCOL
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 export const fetchUser = createAsyncThunk("fetchUser", async (data) => {
     const {userName,password} = data
-    const response = await fetch(`${backendProtocol}://${IP}:${backendPort}/auth/login`, {
+    const response = await fetch(`${backendUrl}/auth/login`, {
         method: "POST",
         body: JSON.stringify({userName,password}),
         headers: {"Content-Type":"application/json"}

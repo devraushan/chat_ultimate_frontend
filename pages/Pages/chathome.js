@@ -7,8 +7,9 @@ import { useSelector } from 'react-redux'
 const DOMAIN = process.env.NEXT_PUBLIC_BACKEND_DOMAIN 
 const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
 const backendProtocol = process.env.NEXT_PUBLIC_PROTOCOL
+const backendUrl  = process.env.NEXT_PUBLIC_BACKEND_URL
 
-const socket = io(`${backendProtocol}://${DOMAIN}:${backendPort}`)
+const socket = io(backendUrl)
 
 
 function Chat(props) {
@@ -27,7 +28,7 @@ function Chat(props) {
   const [message, setmessage] = useState("")
 
   async function getMessage(chatId,authToken){
-    let chatList = await fetch(`${backendProtocol}://${DOMAIN}:${backendPort}/chat/getMessages`,{
+    let chatList = await fetch(`${backendUrl}/chat/getMessages`,{
       method:"POST",
       headers:{
         "auth-token":authToken,

@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 const PORT = process.env.NEXT_PUBLIC_BACKEND_PORT
 const backendDomain = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 const backendProtocol = process.env.NEXT_PUBLIC_PROTOCOL
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 function Chatlist() {
   const router =  useRouter()
@@ -45,7 +46,7 @@ function Chatlist() {
   }
   const authToken = userStatus.data.authToken
   useEffect(() => {
-    fetchChat(`${backendProtocol}://${backendDomain}:${PORT}/chat/fetchall`,authToken)
+    fetchChat(`${backendUrl}/chat/fetchall`,authToken)
     
   }, [])
   

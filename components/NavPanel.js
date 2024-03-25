@@ -5,9 +5,10 @@ import { useSelector,useDispatch } from 'react-redux'
 import { clearToken } from '../Store/slices/userSlice'
 import { useRouter } from 'next/router'
 
-const DOMAIN = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
-const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
-const protocol = process.env.NEXT_PUBLIC_PROTOCOL
+// const DOMAIN = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
+// const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
+// const protocol = process.env.NEXT_PUBLIC_PROTOCOL
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 function NavPanel() {
   const [userName, setuserName] = useState("")
@@ -16,7 +17,7 @@ function NavPanel() {
   const router = useRouter()
   useEffect(() => {
     if(userState.data){
-      fetch(`${protocol}://${DOMAIN}:${backendPort}/auth/getprofile`,{headers:{"auth-token": userState.data.authToken}}).then(res=>res.json()).then(res=>{
+      fetch(`${backendUrl}/auth/getprofile`,{headers:{"auth-token": userState.data.authToken}}).then(res=>res.json()).then(res=>{
         setuserName(res.userName)
         userData.userName = res.userName
       })
