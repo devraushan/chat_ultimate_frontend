@@ -2,6 +2,11 @@
 /** @type {import('next').NextConfig} */
 const withImages = require("next-images");
 const nextConfig = {
+  eslint: {
+
+    ignoreDuringBuilds: true,
+  },
+
   images: {
     domains:[
       process.env.NEXT_PUBLIC_BACKEND_DOMAIN

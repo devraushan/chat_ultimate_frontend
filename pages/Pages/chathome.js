@@ -3,6 +3,7 @@ import { io } from "socket.io-client"
 import userData from "../../UserData/tempState"
 import Image from 'next/image'
 import { useSelector } from 'react-redux'
+import ChatBubble from '../../components/ChatBubble'
 
 const DOMAIN = process.env.NEXT_PUBLIC_BACKEND_DOMAIN 
 const backendPort = process.env.NEXT_PUBLIC_BACKEND_PORT
@@ -70,8 +71,8 @@ function Chat(props) {
 
   
   function sendMessage() {
-    socket.emit("message", {message,sender:userName,roomId,file:image})
-    setmessageArr(messageArr.concat({message,sender:userName,image:imageUrl}))
+    socket.emit("message", {message,sender:userName,roomId,file:image,sendingTime:new Date()})
+    setmessageArr(messageArr.concat({message,sender:userName,image:imageUrl,sendingTime:new Date()}))
     setmessage("")
     setimage(null)
     setimageUrl(null)
@@ -89,9 +90,12 @@ function Chat(props) {
         <div className='grid justify-items-center align-items-center'>
           <h1 className='bold text-4xl my-2'>{chatPerson.fName+" "+chatPerson.lName}</h1>
           <div ref={chatBoxRef} className='w-full px-2 py-2 bg-slate-400 overflow-y-auto customScroll h-[68vh] flex flex-col'>
-            {messageArr.map(msg=><div className={`${msg.sender===userName?" self-end bg-red-200":"bg-blue-200 self-start"} max-w-[90%] my-2 p-1 rounded`} key={msgkey++}>{msg.message}{( msg.image && <Image src={msg.image} height={100} width = {100} />)}</div>)}
+            {messageArr.map(msg=>(
+              <div key={msgkey++}>
+                <ChatBubble isSelf={msg.sender===userName} chatPerson={chatPerson} messageData={msg}/>
+              </div>))}
           </div>
-          <div className='flex justify-around h-[30px] my-2 bg-red-400	w-full p-[3px] z-40'>
+          <div className='flex justify-around h-[30px] my-2 bg-red-400	w-full p-[3px] '>
             <input type="text" className='w-2/3' placeholder='Enter Message Here' onChange={handleChange} value={message} id='message' />
             <label htmlFor="attatchment"  > + </label>
             <input type="file" ref={fileRef} onChange={handleImage} id="attatchment" hidden />
