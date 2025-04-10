@@ -11,6 +11,7 @@ const nextConfig = {
     domains:[
       process.env.NEXT_PUBLIC_BACKEND_DOMAIN
     ],
+    unoptimized:true
   },
   reactStrictMode: true,
   swcMinify: true,
