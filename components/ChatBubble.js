@@ -5,7 +5,6 @@ import Link from 'next/link'
 function ChatBubble({messageData,isSelf,chatPerson  }) {
     console.log(messageData)
     const sendingTime = new Date(messageData.sendingTime)
-    // const dateString = sendingTime.getDate()==(new Date()).getDate()`${sendingTime.getHours()} ${sendingTime.getMinutes()}`?`${sendingTime.getDate()} ${sendingTime.getMonth()}`:
     const timestring = sendingTime.getDate()===(new Date()).getDate()?format(sendingTime,'p'):format(sendingTime,'Pp')
     return (
 

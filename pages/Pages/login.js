@@ -23,7 +23,10 @@ function Login() {
     
     try {
       dispatch(fetchUser({userName,password}))
-      router.push("/Pages/profile")
+      setTimeout(() => {
+        router.push("/Pages/profile")
+        
+      }, 500);
     } catch (error) {
       console.log(error)
     }
@@ -38,7 +41,7 @@ function Login() {
         </div>
         <div className='grid'>
             <label htmlFor="password">Enter Password : -</label>
-            <input type="text" id='password' onChange={handlePass} />
+            <input type="password" id='password' onChange={handlePass} />
         </div>
         <button className='bg-red-300 self-center justify-self-center px-10 py-1 rounded my-10 ' onClick={getUser} >Login</button>
 

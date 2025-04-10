@@ -1,6 +1,7 @@
 import React from 'react'
 import useSWR from "swr"
 import Image from 'next/image';
+import {useRouter} from 'next/router';
 import { useSelector } from 'react-redux';
 
 // const DOMAIN = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
@@ -10,13 +11,15 @@ const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const fetchUser = (authToken) => fetch(`${backendUrl}/auth/getprofile`, { headers: { "auth-token": authToken } }).then((res) => res.json());
 function Profile() {
+  const router = useRouter()
   const userStatus = useSelector((state) => state.authToken)
   const authToken = userStatus.data.authToken
   //ENV Variables
-
+  
   const { data, error } = useSWR(authToken, fetchUser);
-  if (error) return <div>Failed To Load</div>;
-  if (!data) return <div>Loading...</div>;
+  if(!data&&!userStatus.data.authToken) router.push("/Pages/login")
+  if (error) return <div className='text-center mx-auto mt-24'>Failed To Load</div>;
+  if (!data) return <div className='text-center mx-auto mt-24'>Loading...</div>;
 
   const buff = data.profilePic?Buffer.from(data.profilePic.data):null
   const file = new File([buff], "img.jpg", { type: "image/jpeg" })
